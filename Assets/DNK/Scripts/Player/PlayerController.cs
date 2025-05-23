@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerGrabState playerGrabState = PlayerGrabState.Idle;
     
     [Header("Item")]
+    [SerializeField] private Collider2D[] hitItems = new Collider2D[1];
     [SerializeField] private GameObject itemObject;
     [SerializeField] private ItemNames grabItem = ItemNames.None;
     private bool isMoving = false;
@@ -49,7 +50,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         KeyControl();
-        WalkAnimation();
     }
     private void KeyControl()
     {
@@ -217,16 +217,34 @@ public class PlayerController : MonoBehaviour
             animTimer = 0f;
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            hitItems[0] = other;
+        }
+    }
     
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (hitItems[0] = other)
+        {
+            hitItems[0] = null;
+        }
+    }
     private void PickUp()
     {
-        col.OverlapCollider()
-        ItemBehaviour item = other.GetComponent<ItemBehaviour>();
+        if (hitItems[0] == null) return;
+
+        if (grabItem != ItemNames.None) return;
+
+        ItemBehaviour item = hitItems[0].GetComponent<ItemBehaviour>();
         if (item == null) return;
 
         grabItem = item.itemName;
-        
-        itemObject = other.gameObject;
+
+        itemObject = hitItems[0].gameObject;
         itemObject.transform.SetParent(itemSeat.transform);
         itemObject.transform.localPosition = Vector3.zero;
 
