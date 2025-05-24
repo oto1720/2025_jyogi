@@ -13,7 +13,6 @@ public class GirlController : MonoBehaviour
     [SerializeField] private float MoveSpeed = 2f;
     [Header("GirlSprite")]
     [SerializeField] private SpriteRenderer girlRenderer;
-    [SerializeField]private SpriteRenderer clothRenderer;
     [SerializeField] private SpriteRenderer ringRenderer;
     [SerializeField] private SpriteRenderer flowerRenderer;
     [SerializeField] private Sprite[] girlSprites;
@@ -47,17 +46,19 @@ public class GirlController : MonoBehaviour
     {
         ItemBehaviour obj = other.GetComponent<ItemBehaviour>();
         if (obj == null) return;
-
         switch (obj.itemName)
         {
             case ItemNames.Flower:
                 GetFlower();
+                Destroy(other.gameObject);
                 break;
             case ItemNames.Dress:
                 GetDress();
+                Destroy(other.gameObject);
                 break;
             case ItemNames.Ring:
                 GetRing();
+                Destroy(other.gameObject);
                 break;
             default:
                 break;
@@ -70,12 +71,12 @@ public class GirlController : MonoBehaviour
         if (flowerCount >= beBouquetCount)
         {
             girlGrabState = GirlGrabState.Bouquet;
-            flowerRenderer.sprite = girlSprites[2];
+            flowerRenderer.sprite = flowerSprites[1];
         }
         else
         {
-            girlGrabState = GirlGrabState.Flowers;
-            flowerRenderer.sprite = girlSprites[1];
+            girlGrabState = GirlGrabState.AFlower;
+            flowerRenderer.sprite = girlSprites[0];
         }
     }
 
