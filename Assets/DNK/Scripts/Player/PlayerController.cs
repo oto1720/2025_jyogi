@@ -176,6 +176,8 @@ public class PlayerController : MonoBehaviour
         if (rb.linearVelocity.x < maxSpeed)
         {
             rb.AddForce(new Vector2(speed, 0));
+            srTop.flipX = false;
+            srBottom.flipX = false;
         }
     }
 
@@ -184,6 +186,8 @@ public class PlayerController : MonoBehaviour
         if (rb.linearVelocity.x > -maxSpeed)
         {
             rb.AddForce(new Vector2(-speed, 0));
+            srTop.flipX = true;
+            srBottom.flipX = true;
         }
     }
 
