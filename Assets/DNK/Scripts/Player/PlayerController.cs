@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     [Header("MovementValue")]
     [SerializeField] private float speed = 5f;
     [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float friction = 0.9f;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -121,13 +122,15 @@ public class PlayerController : MonoBehaviour
         {
             Left();
         }
-        if(!isUp && !isDown)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y/2);
-        }
+
+        //摩擦
         if (!isLeft && !isRight)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x/2, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x * friction, rb.linearVelocity.y);
+        }
+        if (!isUp && !isDown)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * friction);
         }
 
         if (isGrab)
