@@ -220,7 +220,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Item"))
+        ItemBehaviour obj = other.GetComponent<ItemBehaviour>();
+        if (obj != null)
         {
             hitItems[0] = other;
         }
