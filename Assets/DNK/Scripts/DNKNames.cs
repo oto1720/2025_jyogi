@@ -67,6 +67,15 @@ namespace DNK
             Flower,
             Cloth,
             Stone,
+            Strawberry,
+            Blueberry,
+            Orange,
+            mango,
+            kiwi,
+            banana,
+            Lychee,
+            
+
         }
     }
 }
