@@ -58,6 +58,11 @@ namespace DNK
 
     namespace Item
     {
+        public enum ItemState
+        {
+            Idle,
+            Grab,
+        }
         public enum ItemNames
         {
             None,
