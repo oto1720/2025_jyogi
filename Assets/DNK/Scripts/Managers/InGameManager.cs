@@ -1,13 +1,26 @@
+using Cysharp.Threading.Tasks;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using DNK.Player;
 
 public class InGameManager : MonoBehaviour
 {
+    [Header("gameTime")]
     [SerializeField] private float inGameTimer;
     [SerializeField] private float inGameTimeLimit;
+    [Header("camera")]
     [SerializeField] private CameraMover cameraMover;
     [SerializeField] private int nowStageIndex = 0;
+    [Header("character")] 
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private GirlController girlController;
+    [Header("gameOver")]
+    private bool isGameOver = false;
+    [SerializeField] private SpriteRenderer gameOverSr;
+    [SerializeField] private Sprite bombSprite;
+    [SerializeField] private int gameOverTimeMilliseconds = 1000;
 
     private void Start()
     {
@@ -31,16 +44,18 @@ public class InGameManager : MonoBehaviour
             NextStage(3);
         }
 
-        if (inGameTimer >= inGameTimeLimit)
+        if (inGameTimer >= inGameTimeLimit && !isGameOver)
         {
-            // Game Over logic here
-            Debug.Log("Game Over");
-
+            GameOver();
         }
     }
 
-    public void GameOver()
+    public async void GameOver()
     {
+        isGameOver = true;
+        gameOverSr.sprite = bombSprite;
+        playerController.SetPlayerState(PlayerState.Dead);
+        await UniTask.Delay(gameOverTimeMilliseconds);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -48,7 +63,6 @@ public class InGameManager : MonoBehaviour
     {
         if (nowStageIndex == nextStageIndex)
         {
-            Debug.LogWarning("Already at the next stage.");
             return;
         }
 

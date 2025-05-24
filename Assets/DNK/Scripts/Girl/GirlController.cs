@@ -76,7 +76,7 @@ public class GirlController : MonoBehaviour
         else
         {
             girlGrabState = GirlGrabState.AFlower;
-            flowerRenderer.sprite = girlSprites[0];
+            flowerRenderer.sprite = flowerSprites[0];
         }
     }
 

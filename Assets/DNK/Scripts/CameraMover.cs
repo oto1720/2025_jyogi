@@ -14,7 +14,7 @@ public class CameraMover : MonoBehaviour
         }
 
         // Move the camera to the next point
-        Vector2 targetPosition = movePoints[movePointIndex].position;
+        Vector3 targetPosition = movePoints[movePointIndex].position;
         transform.DOMove(targetPosition, moveSpeed).SetSpeedBased().SetEase(Ease.Linear);
     }
 }

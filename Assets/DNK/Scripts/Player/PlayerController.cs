@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     [Header("PlayerState")]
     [SerializeField] private PlayerState playerState = PlayerState.Idle;
     [SerializeField] private PlayerGrabState playerGrabState = PlayerGrabState.Idle;
-    
+
     [Header("Item")]
     [SerializeField] private Collider2D[] hitItems = new Collider2D[1];
     [SerializeField] private ItemBehaviour item;
@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (rb.linearVelocity.magnitude < 0.1f)
-        {   
+        {
             isMoving = false;
             playerState = PlayerState.Idle;
         }
@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour
             hitItems[0] = other;
         }
     }
-    
+
     private void OnTriggerExit2D(Collider2D other)
     {
         if (hitItems[0] = other)
@@ -258,7 +258,7 @@ public class PlayerController : MonoBehaviour
 
         //オブジェクト操作
         GameObject itemObject = item.transform.gameObject;
-        
+
         itemObject.transform.SetParent(itemSeat.transform);
         itemObject.transform.localPosition = Vector3.zero;
 
@@ -279,5 +279,24 @@ public class PlayerController : MonoBehaviour
         itemObject.transform.position = transform.position;
 
         item = null;
+    }
+    
+    public void SetPlayerState(PlayerState state)
+    {
+        playerState = state;
+        switch (playerState)
+        {
+            case PlayerState.Idle:
+                canControl = true;
+                rb.linearVelocity = Vector2.zero;
+                break;
+            case PlayerState.Walk:
+                canControl = true;
+                break;
+            case PlayerState.Dead:
+                canControl = false;
+                rb.linearVelocity = Vector2.zero;
+                break;
+        }
     }
 }
