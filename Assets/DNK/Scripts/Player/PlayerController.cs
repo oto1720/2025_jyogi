@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     
     [Header("Item")]
     [SerializeField] private Collider2D[] hitItems = new Collider2D[1];
-    [SerializeField] private GameObject itemObject;
+    [SerializeField] private ItemBehaviour item;
     [SerializeField] private ItemNames grabItem = ItemNames.None;
     private bool isMoving = false;
     private bool isGrabbing = false;
@@ -221,6 +221,8 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         ItemBehaviour obj = other.GetComponent<ItemBehaviour>();
+        if (obj == null) return;
+
         if (obj != null)
         {
             hitItems[0] = other;
@@ -240,17 +242,20 @@ public class PlayerController : MonoBehaviour
 
         if (grabItem != ItemNames.None) return;
 
-        ItemBehaviour item = hitItems[0].GetComponent<ItemBehaviour>();
+        item = hitItems[0].GetComponent<ItemBehaviour>();
         if (item == null) return;
 
         grabItem = item.itemName;
+        item.SetItemState(ItemState.Grab);
+        playerGrabState = PlayerGrabState.Grab;
 
-        itemObject = hitItems[0].gameObject;
+        //オブジェクト操作
+        GameObject itemObject = item.transform.gameObject;
+        
         itemObject.transform.SetParent(itemSeat.transform);
         itemObject.transform.localPosition = Vector3.zero;
 
         grabItem = item.itemName;
-        playerGrabState = PlayerGrabState.Grab;
     }
 
     private void Drop()
@@ -258,9 +263,14 @@ public class PlayerController : MonoBehaviour
         if (grabItem == ItemNames.None) return;
 
         grabItem = ItemNames.None;
+        item.SetItemState(ItemState.Idle);
+
+        //オブジェクト操作
+        GameObject itemObject = item.transform.gameObject;
 
         itemObject.transform.SetParent(null);
         itemObject.transform.position = transform.position;
-        itemObject = null;
+
+        item = null;
     }
 }
